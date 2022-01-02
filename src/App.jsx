@@ -7,9 +7,9 @@ import {
 } from "./redux/services/posteo";
 
 const App = () => {
-  const [show, setShow] = useState(false);
-  const [updateShow, setUpdateShow] = useState(false);
-  const [idPost, setIdPost] = useState();
+  const [show, setShow] = useState(false); //Para mostrar Modal para agregar Post
+  const [updateShow, setUpdateShow] = useState(false); //Para mostrar modal update
+  const [idPost, setIdPost] = useState(); //
 
   const { data, error, isFetching } = useGetPostsQuery();
   const [deletePost] = useDeletePostMutation();
@@ -23,7 +23,6 @@ const App = () => {
   };
 
   const borrarPost = async (id) => {
-    console.log(id);
     let validar = window.confirm(`Está seguro que quiere borrar el post}?`);
 
     if (validar) {

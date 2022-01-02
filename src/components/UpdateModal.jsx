@@ -6,7 +6,7 @@ import {
 import { Modal, Button } from "react-bootstrap";
 
 const UpdateModal = ({ updateShow, handleUpdateClose, idPost }) => {
-  const { data, error, isFetching } = useGetPostQuery(idPost);
+  const { data, isFetching } = useGetPostQuery(idPost);
   const [updatePost] = useUpdatePostMutation();
 
   const [formValue, setFormValue] = useState({
@@ -77,7 +77,7 @@ const UpdateModal = ({ updateShow, handleUpdateClose, idPost }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={guardarCambios}>
-          Save post
+          Update post
         </Button>
       </Modal.Footer>
     </Modal>

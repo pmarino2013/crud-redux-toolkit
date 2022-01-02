@@ -29,17 +29,24 @@ const AddModal = ({ show, handleClose }) => {
 
       await addPost(post); //llamo a la funcion que agrega el dato y espero resultado
       // refetch();
-      handleClose();
-      setFormValue({
-        title: "",
-        author: "",
-        description: "",
-      });
+
+      cerrarModal();
+    } else {
+      alert("Faltan Datos");
     }
+  };
+
+  const cerrarModal = () => {
+    handleClose();
+    setFormValue({
+      title: "",
+      author: "",
+      description: "",
+    });
   };
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={cerrarModal}>
         <Modal.Header closeButton>
           <Modal.Title>Add Posts</Modal.Title>
         </Modal.Header>
