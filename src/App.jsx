@@ -1,8 +1,35 @@
-import React from "react";
-import { useGetPostsQuery } from "./redux/services/posteo";
+import React, { useState } from "react";
+import AddModal from "./components/AddModal";
+import UpdateModal from "./components/UpdateModal";
+import {
+  useGetPostsQuery,
+  useDeletePostMutation,
+} from "./redux/services/posteo";
 
 const App = () => {
+  const [show, setShow] = useState(false);
+  const [updateShow, setUpdateShow] = useState(false);
+  const [idPost, setIdPost] = useState();
+
   const { data, error, isFetching } = useGetPostsQuery();
+  const [deletePost] = useDeletePostMutation();
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleUpdateClose = () => setUpdateShow(false);
+  const handleUpdateShow = () => {
+    setUpdateShow(true);
+  };
+
+  const borrarPost = async (id) => {
+    console.log(id);
+    let validar = window.confirm(`Está seguro que quiere borrar el post}?`);
+
+    if (validar) {
+      await deletePost(id);
+    }
+  };
 
   return (
     <div className="container text-center">
@@ -13,7 +40,7 @@ const App = () => {
       </div>
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2 d-flex justify-content-end">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={handleShow}>
             <i className="fa fa-plus" aria-hidden="true"></i>
           </button>
         </div>
@@ -31,6 +58,7 @@ const App = () => {
                   <th>Title</th>
                   <th>Author</th>
                   <th>Description</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -39,6 +67,29 @@ const App = () => {
                     <td>{post.title}</td>
                     <td>{post.author}</td>
                     <td>{post.description}</td>
+                    <td>
+                      <div className="d-flex">
+                        <i
+                          className="fa fa-pencil-square-o mb-1"
+                          role="button"
+                          aria-hidden="true"
+                          onClick={() => {
+                            setIdPost(post.id);
+                            handleUpdateShow();
+                          }}
+                        ></i>
+                      </div>
+                      <div className="d-flex">
+                        <i
+                          className="fa fa-trash-o"
+                          role="button"
+                          aria-hidden="true"
+                          onClick={() => {
+                            borrarPost(post.id);
+                          }}
+                        ></i>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -46,6 +97,15 @@ const App = () => {
           )}
         </div>
       </div>
+
+      <AddModal show={show} handleClose={handleClose} />
+      {updateShow && (
+        <UpdateModal
+          updateShow={updateShow}
+          handleUpdateClose={handleUpdateClose}
+          idPost={idPost}
+        />
+      )}
     </div>
   );
 };
